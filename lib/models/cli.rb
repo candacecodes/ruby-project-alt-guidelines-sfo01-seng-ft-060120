@@ -26,6 +26,7 @@ class CLI
         while username == "" 
             puts 'Hi, please enter your name:'
             username = gets.chomp
+            puts "Hi #{username}, thanks for joining."
         end
  
         #location stuff
@@ -33,7 +34,7 @@ class CLI
         while location == "" 
             puts 'Please enter your location from the following: SF or Seattle'
             location = gets.chomp
-            puts "Thanks, let's continue."
+            puts "Thanks, your location is set to #{location} let's continue."
         end 
 
         @customer = Customer.create(name: username, location: location) 
@@ -41,7 +42,7 @@ class CLI
 
     def choose_farmer #<view_previous_order> can return here
         selected_farmers = Farmer.all.select {|farmer| farmer.location == @customer.location}
-        selected_farmers.select {|farmers| puts farmers.name} 
+        selected_farmers.select {|farmers| puts farmers.name}.uniq 
 
         farmer = ""
         while farmer == "" 
@@ -75,36 +76,68 @@ class CLI
     #     #joins order(:size) with customer 
     # end 
 
-    def select_size #Create
+    def select_size #Create 
         order_size = "" 
-        while order_size == "" #!= "small" "medium" "large"
-            # if order_size !="small, medium, large"
-            puts 'Please select an order size from the following for your produce order: small, medium, large'
+        # order
+        while order_size != "small" || order_size != "medium" || order_size != "large" || order_size = ""
+            puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
             order_size = gets.chomp 
-            if order_size != "small"
-                puts 'please select either a small, medium, or large box.'
-            elsif order_size != "medium"
-                puts 'please select either a small, medium, or large box.'
-            elsif order_size != "large"
-                puts 'please select either a small, medium, or large box.'
-            puts 'Please re-enter from the following options: small, medium, large'
+        puts 'Please select an order size from the following for your produce order: small, medium, large'
+        order_size = gets.chomp 
+        if order_size == "small" || order_size == "medium" || order_size == "large" 
+            puts "Thanks, you have selected #{order_size} for your order size."
+            @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+        else 
+            # puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+            # order_size = gets.chomp 
+            # while order_size != "small" || order_size != "medium" || order_size != "large" 
+            #     puts "Thanks, you have selected #{order_size} for your order size."
+            #       @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+            #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
             end 
-        end
-        puts "Thanks, you have selected #{order_size} for your order size and your order number is order_id."
-        #joins order(:size) with customer 
+        end 
     end 
 
-      As a user, I want to be able to make an order from a farmer. (Create)
-    def create_order 
+
+
+        # while order_size != ""
+        #     # if order_size !="small, medium, large"
+        #     order_size = gets.chomp 
+        #     if order_size == "small" || order_size == "medium" || order_size == "large"
+        #         puts "Thanks, you have selected #{order_size} for your order size."
+        #     elseif 
+        #         puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+        #     # if order_size != "small" || order_size != "medium" || order_size != "large"
+        #     #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+        #     else
+        #         puts "Thanks, you have selected #{order_size} for your order size."
+        #     # #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+        #     # else order_size != "large"
+        #     #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+        #     # puts 'Please re-enter from the following options: small, medium, large'
+        #     end 
+        # end
+        
+        #Create order.create(parameters) 
+    #     @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+    # end 
+
+    #create <exit> method to return user if they choose no from <create_order>
+    def exit 
+        puts 'Thank you for your time.'
+    end 
+
+    #   As a user, I want to be able to make an order from a farmer. (Create)
+    def create_order #call only if order size is correct
         response = "" 
             while response == ""
                 puts 'Want to make an order? Put in Y for yes and N for no'
                 response = gets.chomp 
-                if response = "Y" 
+                if response == "Y" 
                     size = select_size 
-                    Order.create(customer: @customer, farmer: @farmer, size: size)
-                elsif response = "N"
-                    puts 'Exit' #need to bring back to main menu 
+                    # Order.create(customer: @customer, farmer: @farmer, size: size)
+                elsif response == "N"
+                    exit  #method call for start_method 
                 else 
                     puts 'That is not a valid input. Please put in Y or N.'
                 end 
@@ -112,11 +145,12 @@ class CLI
             #if no => end 
             #if yes => <select_size>
         #join customer and farmer together to create an order instance 
+            end 
     end
 
 #     # As a user, I want to be able to confirm an order from a farmer. (Create)
-#     def confirm_order (ordernumber)
-#         matching_order = Order.all.find {|order| order.number == ordernumber}
+#     def confirm_order (order_number)
+#         matching_order = Order.all.find {|order| order.number == order_number}
 #         order_details = matching_order.each {|order| puts order.customer, order.farmer, order.size}
 #         puts "Here are the details of your confirmed order. #{order_details}""
 #     end 
