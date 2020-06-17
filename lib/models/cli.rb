@@ -20,6 +20,22 @@ class CLI
         produce options. Shipped to your door!' 
     end 
 
+    # def repeat_customer
+        #     puts 'To start enter user name:'
+        #     input = gets.chomp
+        #     @user_name = Customer.find_by(name: input)
+        #         if @user_name 
+        #         #puts looks like you've already set up an account! continue w/ previous order? y or n?
+        #         #seepreviousorder?
+        #         else
+        #         @user_name = Customer.create(name: input) #maybe jump to create_name?
+        #         #addlocation later?        
+        #     end
+        #     binding.pry
+        # end
+
+
+    
     def create_name 
         #username stuff
         username = ""
@@ -77,60 +93,6 @@ class CLI
     #     #joins order(:size) with customer 
     # end 
 
-    def select_size #Create 
-        order_size = "" 
-        puts 'Please select an order size from the following for your produce order: small, medium, large'
-        order_size = gets.chomp
-        if order_size == "small" || order_size == "medium" || order_size == "large" 
-            puts "Thanks, you have selected #{order_size} for your order size."
-
-        else order_size != "small" || order_size != "medium" || order_size != "large" 
-            puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-            order_size = gets.chomp
-            puts "Thanks, you have selected #{order_size} for your order size."
-        end
-       binding.pry
-        
-        @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
-    
-            # puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-            # order_size = gets.chomp 
-            # while order_size != "small" || order_size != "medium" || order_size != "large" 
-            #     puts "Thanks, you have selected #{order_size} for your order size."
-            #       @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
-            #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'
-    end 
-
-
-
-        # while order_size != ""
-        #     # if order_size !="small, medium, large"
-        #     order_size = gets.chomp 
-        #     if order_size == "small" || order_size == "medium" || order_size == "large"
-        #         puts "Thanks, you have selected #{order_size} for your order size."
-        #     elseif 
-        #         puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-        #     # if order_size != "small" || order_size != "medium" || order_size != "large"
-        #     #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-        #     else
-        #         puts "Thanks, you have selected #{order_size} for your order size."
-        #     # #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-        #     # else order_size != "large"
-        #     #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-        #     # puts 'Please re-enter from the following options: small, medium, large'
-        #     end 
-        # end
-        
-        #Create order.create(parameters) 
-    #     @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
-    # end 
-
-    #create <exit> method to return user if they choose no from <create_order>
-    def exit 
-        puts 'Thank you for your time.'
-    end 
-
-    #   As a user, I want to be able to make an order from a farmer. (Create)
     def create_order #call only if order size is correct
         response = "" 
             while response == ""
@@ -151,6 +113,43 @@ class CLI
             end 
     end
 
+
+    def select_size #Create 
+        order_size = "" 
+        puts 'Please select an order size from the following for your produce order: small, medium, large'
+        order_size = gets.chomp
+        if order_size == "small" || order_size == "medium" || order_size == "large" 
+            puts "Thanks, you have selected #{order_size} for your order size."
+
+        else order_size != "small" || order_size != "medium" || order_size != "large" 
+            puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+            order_size = gets.chomp
+            puts "Thanks, you have selected #{order_size} for your order size."
+        end
+        @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+    
+            # puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+            # order_size = gets.chomp 
+            # while order_size != "small" || order_size != "medium" || order_size != "large" 
+            #     puts "Thanks, you have selected #{order_size} for your order size."
+            #       @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+            #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'
+    end 
+
+
+
+     
+        #Create order.create(parameters) 
+    #     @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+    # end 
+
+    #create <exit> method to return user if they choose no from <create_order>
+    def exit 
+        puts 'Thank you for your time.'
+    end 
+
+    #   As a user, I want to be able to make an order from a farmer. (Create)
+    
 #     # As a user, I want to be able to confirm an order from a farmer. (Create)
 #     def confirm_order (order_number)
 #         matching_order = Order.all.find {|order| order.number == order_number}
@@ -186,18 +185,6 @@ class CLI
 #     #     puts 'Want to clear your order? Select Y for yes and N for no'
 #     # end 
 
-  # def repeat_customer
-    #     puts 'To start enter user name:'
-    #     input = gets.chomp
-    #     @user_name = Customer.find_by(name: input)
-    #         if @user_name 
-    #         #puts looks like you've already set up an account! continue w/ previous order? y or n?
-    #         #seepreviousorder?
-    #         else
-    #         @user_name = Customer.create(name: input) #maybe jump to create_name?
-    #         #addlocation later?        
-    #     end
-    #     binding.pry
-    # end
+  
 
 end 
