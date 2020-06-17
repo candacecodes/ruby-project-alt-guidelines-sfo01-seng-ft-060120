@@ -41,8 +41,9 @@ class CLI
     end
 
     def choose_farmer #<view_previous_order> can return here
-        selected_farmers = Farmer.all.select {|farmer| farmer.location == @customer.location}
-        selected_farmers.select {|farmers| puts farmers.name}.uniq 
+        selected_farmers = Farmer.all.select {|farmer| farmer.location.upcase == @customer.location.upcase}
+        
+       puts selected_farmers.map {|farmers| farmers.name}.uniq 
 
         farmer = ""
         while farmer == "" 
@@ -78,24 +79,26 @@ class CLI
 
     def select_size #Create 
         order_size = "" 
-        # order
-        while order_size != "small" || order_size != "medium" || order_size != "large" || order_size = ""
-            puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-            order_size = gets.chomp 
         puts 'Please select an order size from the following for your produce order: small, medium, large'
-        order_size = gets.chomp 
+        order_size = gets.chomp
         if order_size == "small" || order_size == "medium" || order_size == "large" 
             puts "Thanks, you have selected #{order_size} for your order size."
-            @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
-        else 
+
+        else order_size != "small" || order_size != "medium" || order_size != "large" 
+            puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+            order_size = gets.chomp
+            puts "Thanks, you have selected #{order_size} for your order size."
+        end
+       binding.pry
+        
+        @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+    
             # puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
             # order_size = gets.chomp 
             # while order_size != "small" || order_size != "medium" || order_size != "large" 
             #     puts "Thanks, you have selected #{order_size} for your order size."
             #       @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
-            #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-            end 
-        end 
+            #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'
     end 
 
 
@@ -133,10 +136,10 @@ class CLI
             while response == ""
                 puts 'Want to make an order? Put in Y for yes and N for no'
                 response = gets.chomp 
-                if response == "Y" 
+                if response == "Y" || response == 'y'
                     size = select_size 
                     # Order.create(customer: @customer, farmer: @farmer, size: size)
-                elsif response == "N"
+                elsif response == "N" || response =="n"
                     exit  #method call for start_method 
                 else 
                     puts 'That is not a valid input. Please put in Y or N.'
@@ -170,7 +173,7 @@ class CLI
 #     # end 
 
 #     # # As a user, I should be able to edit my shopping list size. (Update)
-#     # def edit_order(orderid)
+#     # def edit_order(order_id)
 #         orderid = ""
 #         puts 'Please enter your order_id' 
 #         orderid = gets.chomp 
