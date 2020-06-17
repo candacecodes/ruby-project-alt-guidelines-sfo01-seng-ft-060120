@@ -16,7 +16,8 @@ class CLI
     #class variables: @@my_var (scope: throughout the class)
 
     def greeting
-        puts 'Welcome to Farm to Table, meet your perfect farmer!' 
+        puts 'Welcome to Farm to Table! your connection to locally sourced, organically grown and sustainable
+        produce options. Shipped to your door!' 
     end 
 
     def create_name 
@@ -30,8 +31,9 @@ class CLI
         #location stuff
         location = ""
         while location == "" 
-            puts 'please enter your location from the following:'
+            puts 'Please enter your location from the following: SF or Seattle'
             location = gets.chomp
+            puts "Thanks, let's continue."
         end 
 
         @customer = Customer.create(name: username, location: location) 
@@ -39,15 +41,15 @@ class CLI
 
     def choose_farmer #<view_previous_order> can return here
         selected_farmers = Farmer.all.select {|farmer| farmer.location == @customer.location}
-        selected_farmers.each {|farmers| puts farmers.name} 
+        selected_farmers.select {|farmers| puts farmers.name} 
 
         farmer = ""
         while farmer == "" 
-            puts 'Please choose a farmer'
+            puts 'Please choose a farmer from the list:'
             farmer = gets.chomp 
         end
 
-        puts "Thanks, you have chosen #{farmer}."
+        puts "Thanks. You have chosen #{farmer}."
 
         @farmer = Farmer.find_by(name: farmer) 
 
@@ -60,67 +62,105 @@ class CLI
     end 
 
 
-    # As a user, I want to be able to make an order from a farmer. (Create)
-    # def make_order 
-    #     response = "" 
-    #         while response == ""
-    #             puts 'Want to make an order? Put in Y for yes and N for no'
-    #             response = gets.chomp 
-    #             if response = "Y" 
-    #                 size = select_size 
-    #                 Order.create(customer: @customer, farmer: @farmer, size: size)
-    #             elsif response = "N"
-    #                 puts 'Exit' #need to bring back to main menu 
-    #             else 
-    #                 puts 'That is not a valid input. Please put in Y or N.'
-    #             end 
-    #     #answer y or n 
-    #         #if no => end 
-    #         #if yes => <select_size>
-    #     #join customer and farmer together to create an order instance 
-    # end
     
-    def select_size #also used in <make_order>
-        puts 'Please select a size (small, medium, large)'
-        #method selects size 
+# select_size #Create
+    #     order_size = "" 
+    #     while order_size == "" #!= "small" "medium" "large"
+    #         puts 'Please select an order size from the following for your produce order: small, medium, large'
+    #         order_size = gets.chomp 
+    #         #if order_size != small, medium, or large 
+    #         #puts 'Please re-enter from the following options: small, medium, large'
+    #     end
+    #     puts "Thanks, you have selected #{order_size} for your order size and your order number is order_id."
+    #     #joins order(:size) with customer 
+    # end 
+
+    def select_size #Create
+        order_size = "" 
+        while order_size == "" #!= "small" "medium" "large"
+            # if order_size !="small, medium, large"
+            puts 'Please select an order size from the following for your produce order: small, medium, large'
+            order_size = gets.chomp 
+            if order_size != "small"
+                puts 'please select either a small, medium, or large box.'
+            elsif order_size != "medium"
+                puts 'please select either a small, medium, or large box.'
+            elsif order_size != "large"
+                puts 'please select either a small, medium, or large box.'
+            puts 'Please re-enter from the following options: small, medium, large'
+            end 
+        end
+        puts "Thanks, you have selected #{order_size} for your order size and your order number is order_id."
         #joins order(:size) with customer 
     end 
 
-    # # As a user, I want to pick a farm and view previous orders. (Read)
-    def view_previous_orders
-        puts 'Do you want to view your previous order?' #'Want to view previous orders?' 
+      As a user, I want to be able to make an order from a farmer. (Create)
+    def create_order 
+        response = "" 
+            while response == ""
+                puts 'Want to make an order? Put in Y for yes and N for no'
+                response = gets.chomp 
+                if response = "Y" 
+                    size = select_size 
+                    Order.create(customer: @customer, farmer: @farmer, size: size)
+                elsif response = "N"
+                    puts 'Exit' #need to bring back to main menu 
+                else 
+                    puts 'That is not a valid input. Please put in Y or N.'
+                end 
         #answer y or n 
-            #if no => take back to <choose_farmer> method 
-            #if yes => method selects orders that match with customer_id 
+            #if no => end 
+            #if yes => <select_size>
+        #join customer and farmer together to create an order instance 
+    end
 
-            #can do another method that specifies the orders with farmer too 
-            #method in SQL that SELECT * FROM orders WHERE customer_id == ? and farmer_id == ?
-    end 
+#     # As a user, I want to be able to confirm an order from a farmer. (Create)
+#     def confirm_order (ordernumber)
+#         matching_order = Order.all.find {|order| order.number == ordernumber}
+#         order_details = matching_order.each {|order| puts order.customer, order.farmer, order.size}
+#         puts "Here are the details of your confirmed order. #{order_details}""
+#     end 
+        
+#     # end
 
-    # # As a user, I should be able to edit my shopping list size. (Update)
-    # def edit_order 
-    #     puts 
-    #     response = "" 
-    #     while response == ""
-    #         puts 'Want to change your order size? Put in Y for yes and N for no'
-    #         response = gets.chomp 
-    #         if response = "Y" 
-    #             size = select_size 
-    #             #Order.update(customer: @customer, farmer: @farmer, size: size)??
-    #         elsif response = "N"
-    #             puts 'Exit' #need to bring back to main menu 
-    #         else 
-    #             puts 'That is not a valid input. Please put in Y or N.'
-    #         end 
-    # end 
+#     # # As a user, I want to pick a farm and view previous orders. (Read)
+#     # def view_previous_order
+#         def find_customer(name)
+#             Puts 'Please enter your name.'
+#             Customer.all.select{|customer| customer.name == name} 
+#             find corresponding order numbers from customer name search 
+#         end 
+#         def find_previous_orders(orderid)
+#             use order numbers to pull up farmer and size details (name can be excluded)
+#         end 
+#     # end 
 
-    # As a user, I want to be able to delete my basket. (Delete)
-    def clear_basket
-        puts 'Want to clear your order?'
-        puts 'Select y or n'
-        #method to delete the order 
-        #if no => continue 
-        #if yes => delete order 
-    end 
+#     # # As a user, I should be able to edit my shopping list size. (Update)
+#     # def edit_order(orderid)
+#         orderid = ""
+#         puts 'Please enter your order_id' 
+#         orderid = gets.chomp 
+#         Order.all.find {|order| order_id == orderid}
+#         <order_size>
+#     # end 
+
+#     # As a user, I want to be able to delete my basket. (Delete)
+#     # def clear_basket
+#     #     puts 'Want to clear your order? Select Y for yes and N for no'
+#     # end 
+
+  # def repeat_customer
+    #     puts 'To start enter user name:'
+    #     input = gets.chomp
+    #     @user_name = Customer.find_by(name: input)
+    #         if @user_name 
+    #         #puts looks like you've already set up an account! continue w/ previous order? y or n?
+    #         #seepreviousorder?
+    #         else
+    #         @user_name = Customer.create(name: input) #maybe jump to create_name?
+    #         #addlocation later?        
+    #     end
+    #     binding.pry
+    # end
 
 end 

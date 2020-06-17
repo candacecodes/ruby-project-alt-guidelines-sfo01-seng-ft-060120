@@ -6,6 +6,6 @@ require_relative '../config/environment'
 new_CLI = CLI.new 
 new_CLI.start_method 
 new_CLI.choose_farmer 
-new_CLI.make_order 
+new_CLI.select_size 
 
 
