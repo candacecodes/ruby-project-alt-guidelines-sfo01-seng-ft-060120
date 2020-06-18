@@ -6,8 +6,20 @@ class CLI
     end 
 
     def greeting
-        puts 'Welcome to Farm to Table! your connection to locally sourced, organically grown and sustainable
-        produce options. Shipped to your door!' 
+        puts "Welcome to Farm to Table! Your connection to locally sourced, organically grown and sustainable
+        produce options. Shipped to your door!"
+        sleep 3 
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+      puts """           .:'
+      __ :'__
+  .'`__`-'__``.
+  :__________.-'
+  :_________:
+  :_________`-;
+   `.__.-.__.' """
+    
+    
     end 
 
     # def repeat_customer
@@ -87,7 +99,7 @@ class CLI
     #select_size method also holds create order function 
     def select_size #Create 
         order_size = "" 
-        puts 'Please select an order size from the following for your produce order: small, medium, large'
+        puts 'Please select an order size from the following for your produce order: small (1-2 person), medium (3-4 person), large (5 people)'
         order_size = gets.chomp
         if order_size == "small" || order_size == "medium" || order_size == "large" 
             puts "Thanks, you have selected #{order_size} for your order size and your order id is #{order.id} We'll send details shortly."
@@ -198,8 +210,8 @@ class CLI
 
     def edit_delete_or_exit
         response = "" 
-        puts 'Enter edit (to edit your order size), delete (to delete your order), or exit (to exit)'
-        response = gets.chomp 
+        puts 'Enter edit (to edit your order size), delete (to delete your order), or exit (to exit).'
+        response = gets.chomp.downcase 
         if response == "exit"
             exit 
         elsif response == "delete" 
@@ -208,6 +220,7 @@ class CLI
             edit_order
         else 
             puts "Please a valid option of 'edit, 'delete,' or 'exit.'"
+            edit_delete_or_exit
         end 
     end 
 
