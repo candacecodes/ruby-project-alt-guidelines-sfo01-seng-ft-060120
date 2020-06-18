@@ -25,5 +25,45 @@ Customer doesn't see this when interacting with the application.
 Ex. create a method in a class called fruit_randomizer, which selects random produce from your produce class. 
 Can use online resources that provides hashes of data for us to test out MVP. 
 
-## Stretch Goals
-- 
+Stretch Goals
+TTY Main Menu 
+- Create an order => 
+
+    def start_method
+        prompt = TTY::Prompt.new
+        prompt.select("What would you like to do?", cycle: true, echo: false) do |menu|
+            menu.choice "create username", -> {create_name}
+            menu.choice "choose farmer", -> {choose_farmer}
+            menu.choice "make a order", -> {create_order}
+            menu.choice "edit order", -> {edit_order}
+            menu.choice "delete order", -> {delete_order}
+            menu.choice "exit farm to table" do exit! end
+        end
+    end 
+
+
+
+
+
+
+
+- As a user, I want to be able to confirm an order from a farmer. (Read)
+#     def confirm_order (order_number)
+#         matching_order = Order.all.find {|order| order.number == order_number}
+#         order_details = matching_order.each {|order| puts order.customer, order.farmer, order.size}
+#         puts "Here are the details of your confirmed order. #{order_details}""
+#     end 
+        
+#     # end
+
+- As a user, I want to pick a farm and view previous orders. (Read)
+#     # def view_previous_order
+#         def find_customer(name)
+#             Puts 'Please enter your name.'
+#             Customer.all.select{|customer| customer.name == name} 
+#             find corresponding order numbers from customer name search 
+#         end 
+#         def find_previous_orders(orderid)
+#             use order numbers to pull up farmer and size details (name can be excluded)
+#         end 
+#     # end 
