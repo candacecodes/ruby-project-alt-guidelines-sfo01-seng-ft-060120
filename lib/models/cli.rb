@@ -3,17 +3,7 @@ class CLI
     def start_method
         greeting 
         create_name # customer2
-        # print all farmers in area 
-        # have user select a farmer -> farmer3
-        # create an order for that customer and the farmer (Order.create(customer: customer2, farmer: farmer3))
-        # it might be better to do @customer instead of customer because we might want to use it again 
-        # if we want to keep track of the customer until the end of the order 
-        # @ allows us to have access to customer throughout the methods 
     end 
-
-    #local variables: my_var (scope: just one method)
-    #instance variables: @my_var (scope: throughout the instance - in other instance methods)
-    #class variables: @@my_var (scope: throughout the class)
 
     def greeting
         puts 'Welcome to Farm to Table! your connection to locally sourced, organically grown and sustainable
@@ -71,84 +61,52 @@ class CLI
 
         @farmer = Farmer.find_by(name: farmer) 
 
-
-        #'Want to order produce directly from your local farmer? We can help you with that!'
-        # puts 'Put in farmer (choice'
-        #what could we put here to allow a user to type a response? 
-        #method that selects the farmer from list 
-        #customer_id and farmer_id are linked/joined
     end 
 
 
-    
-# select_size #Create
-    #     order_size = "" 
-    #     while order_size == "" #!= "small" "medium" "large"
-    #         puts 'Please select an order size from the following for your produce order: small, medium, large'
-    #         order_size = gets.chomp 
-    #         #if order_size != small, medium, or large 
-    #         #puts 'Please re-enter from the following options: small, medium, large'
-    #     end
-    #     puts "Thanks, you have selected #{order_size} for your order size and your order number is order_id."
-    #     #joins order(:size) with customer 
-    # end 
 
-    def create_order #call only if order size is correct
+
+    def create_order #called in order_size to create an order instance variable. 
         response = "" 
             while response == ""
                 puts 'Want to make an order? Put in Y for yes and N for no'
                 response = gets.chomp 
                 if response == "Y" || response == 'y'
                     size = select_size 
-                    # Order.create(customer: @customer, farmer: @farmer, size: size)
+                    Order.create(customer: @customer, farmer: @farmer, size: size)
                 elsif response == "N" || response =="n"
                     exit  #method call for start_method 
                 else 
                     puts 'That is not a valid input. Please put in Y or N.'
                 end 
-        #answer y or n 
-            #if no => end 
-            #if yes => <select_size>
-        #join customer and farmer together to create an order instance 
             end 
     end
 
 
+    #As a user, I want to be able to make an order from a farmer. (Create)
+    #select_size method also holds create order function 
     def select_size #Create 
         order_size = "" 
         puts 'Please select an order size from the following for your produce order: small, medium, large'
         order_size = gets.chomp
         if order_size == "small" || order_size == "medium" || order_size == "large" 
-            puts "Thanks, you have selected #{order_size} for your order size."
+            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
 
         else order_size != "small" || order_size != "medium" || order_size != "large" 
             puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
             order_size = gets.chomp
-            puts "Thanks, you have selected #{order_size} for your order size."
+            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
         end
         @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
     
-            # puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
-            # order_size = gets.chomp 
-            # while order_size != "small" || order_size != "medium" || order_size != "large" 
-            #     puts "Thanks, you have selected #{order_size} for your order size."
-            #       @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
-            #     puts "Please put in a valid option of 'small,' 'medium,' or 'large'
     end 
 
-
-
-     
-        #Create order.create(parameters) 
-    #     @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
-    # end 
 
     #create <exit> method to return user if they choose no from <create_order>
     def exit 
         puts 'Thank you for your time.'
     end 
 
-    #   As a user, I want to be able to make an order from a farmer. (Create)
     
 #     # As a user, I want to be able to confirm an order from a farmer. (Create)
 #     def confirm_order (order_number)
@@ -171,19 +129,72 @@ class CLI
 #         end 
 #     # end 
 
-#     # # As a user, I should be able to edit my shopping list size. (Update)
-#     # def edit_order(order_id)
-#         orderid = ""
-#         puts 'Please enter your order_id' 
-#         orderid = gets.chomp 
-#         Order.all.find {|order| order_id == orderid}
-#         <order_size>
-#     # end 
+    # As a user, I want to edit my shopping list size. (Update)
+    def edit_order 
+        edit = ""
+            while edit == "" 
+                puts 'Want to edit your order? Select Y for yes or N to exit.'
+                edit = gets.chomp 
+                if edit == "Y" 
+                    select_size 
+            elsif edit == "N" 
+                exit 
+            else 
+                puts 'That is not a valid input. Please select Y to edit or N to exit.'
+                edit = gets.chomp 
+            end 
+        end 
+    end 
+
+
 
 #     # As a user, I want to be able to delete my basket. (Delete)
-#     # def clear_basket
-#     #     puts 'Want to clear your order? Select Y for yes and N for no'
-#     # end 
+    def clear_basket
+        clear = ""
+        puts 'Want to clear your order? Select Y for yes and N for no'
+        clear = gets.chomp 
+        if clear == "Y" || clear == "Yes"
+            Order.delete(customer: @customer, farmer: @farmer, size: @order_size)
+            puts "Your basket has been deleted."
+            binding.pry
+        else clear == "N" || clear == "No"
+            exit 
+        end 
+    end 
+
+    def select_size #Create 
+        order_size = "" 
+        puts 'Please select an order size from the following for your produce order: small, medium, large'
+        order_size = gets.chomp
+        if order_size == "small" || order_size == "medium" || order_size == "large" 
+            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
+
+        else order_size != "small" || order_size != "medium" || order_size != "large" 
+            puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+            order_size = gets.chomp
+            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
+        end
+        @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+        edit_delete_or_exit
+    
+    end 
+
+    def edit_delete_or_exit
+        response = "" 
+        puts 'Enter edit (to edit your order size), delete (to delete your order), or exit (to exit)'
+        response = gets.chomp 
+        if response == "exit"
+            exit 
+        elsif response == "delete" 
+            clear_basket
+        elsif response == "edit" 
+            edit_order
+        else 
+            puts "Please a valid option of 'edit, 'delete,' or 'exit.'"
+        end 
+    end 
+
+
 
   
 
