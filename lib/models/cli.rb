@@ -90,17 +90,35 @@ class CLI
         puts 'Please select an order size from the following for your produce order: small, medium, large'
         order_size = gets.chomp
         if order_size == "small" || order_size == "medium" || order_size == "large" 
-            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
+            puts "Thanks, you have selected #{order_size} for your order size and your order id is #{order.id} We'll send details shortly."
 
         else order_size != "small" || order_size != "medium" || order_size != "large" 
             puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
             order_size = gets.chomp
-            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
+            puts "Thanks, you have selected #{order_size} for your order size and your order id is #{order.id} We'll send details shortly."
         end
         @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
     
     end 
 
+    def edit_size #Update 
+        order_size = "" 
+        puts 'Please select an order size from the following for your produce order: small, medium, large'
+        order_size = gets.chomp
+        if order_size == "small" || order_size == "medium" || order_size == "large" 
+            @order = Order.update(@order.id, :size => order_size)
+            puts "Thanks, you have updated your order size to #{order_size} and your order id is #{@order.id}. We'll send details shortly."
+            edit_delete_or_exit
+
+        else order_size != "small" || order_size != "medium" || order_size != "large" 
+            puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
+            order_size = gets.chomp
+            # @order = Order.update(size: order.size)
+            # puts "Thanks, you have updated your order size to #{order_size} and your order id is #{@order.id}. We'll send details shortly."
+            # edit_delete_or_exit
+        end
+    
+    end 
 
     #create <exit> method to return user if they choose no from <create_order>
     def exit 
@@ -108,7 +126,7 @@ class CLI
     end 
 
     
-#     # As a user, I want to be able to confirm an order from a farmer. (Create)
+#     # As a user, I want to be able to confirm an order from a farmer. (Read)
 #     def confirm_order (order_number)
 #         matching_order = Order.all.find {|order| order.number == order_number}
 #         order_details = matching_order.each {|order| puts order.customer, order.farmer, order.size}
@@ -136,7 +154,7 @@ class CLI
                 puts 'Want to edit your order? Select Y for yes or N to exit.'
                 edit = gets.chomp 
                 if edit == "Y" 
-                    select_size 
+                    edit_size  
             elsif edit == "N" 
                 exit 
             else 
@@ -154,9 +172,9 @@ class CLI
         puts 'Want to clear your order? Select Y for yes and N for no'
         clear = gets.chomp 
         if clear == "Y" || clear == "Yes"
-            Order.delete(customer: @customer, farmer: @farmer, size: @order_size)
+            # Order.delete(customer: @customer, farmer: @farmer, size: @order_size)
+            Order.delete(@order.id)
             puts "Your basket has been deleted."
-            binding.pry
         else clear == "N" || clear == "No"
             exit 
         end 
@@ -167,14 +185,13 @@ class CLI
         puts 'Please select an order size from the following for your produce order: small, medium, large'
         order_size = gets.chomp
         if order_size == "small" || order_size == "medium" || order_size == "large" 
-            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
 
         else order_size != "small" || order_size != "medium" || order_size != "large" 
             puts "Please put in a valid option of 'small,' 'medium,' or 'large'"
             order_size = gets.chomp
-            puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. We'll send details shortly."
         end
         @order = Order.create(customer: @customer, farmer: @farmer, size: order_size)
+        puts "Thanks, you have selected #{order_size} for your order size and we have submitted your order. Your order number is #{@order.id} and we'll send details shortly."
         edit_delete_or_exit
     
     end 
