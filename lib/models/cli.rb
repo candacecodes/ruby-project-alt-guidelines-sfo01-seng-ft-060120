@@ -2,23 +2,23 @@ class CLI
 
     def start_method
         greeting 
-        create_name # customer2
+        create_name #and location 
+        choose_farmer 
+        create_order #get size and order id 
     end 
 
     def greeting
-        puts "Welcome to Farm to Table! Your connection to locally sourced, organically grown and sustainable
-        produce options. Shipped to your door!"
-        sleep 3 
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        puts "Welcome to Farm to Table! Your connection to locally sourced, organically grown, and sustainable produce options. Shipped to your door!"
+        # sleep 2 
+        # puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
-      puts """           .:'
-      __ :'__
-  .'`__`-'__``.
-  :__________.-'
-  :_________:
-  :_________`-;
-   `.__.-.__.' """
-    
+#       puts """           .:'
+# #       __ :'__
+# #   .'`__`-'__``.
+# #   :__________.-'
+# #   :_________:
+# #   :_________`-;
+# #    `.__.-.__.' """
     
     end 
 
@@ -36,13 +36,11 @@ class CLI
         #     binding.pry
         # end
 
-
-    
     def create_name 
         #username stuff
         username = ""
         while username == "" 
-            puts 'Hi, please enter your name:'
+            puts 'Please enter your name:'
             username = gets.chomp
             puts "Hi #{username}, thanks for joining."
         end
@@ -65,7 +63,7 @@ class CLI
 
         farmer = ""
         while farmer == "" 
-            puts 'Please choose a farmer from the list:'
+            puts 'Here are the local farmers in your area. Please choose a farmer:'
             farmer = gets.chomp 
         end
 
@@ -74,9 +72,6 @@ class CLI
         @farmer = Farmer.find_by(name: farmer) 
 
     end 
-
-
-
 
     def create_order #called in order_size to create an order instance variable. 
         response = "" 
@@ -90,10 +85,10 @@ class CLI
                     exit  #method call for start_method 
                 else 
                     puts 'That is not a valid input. Please put in Y or N.'
+                    create_order 
                 end 
             end 
     end
-
 
     #As a user, I want to be able to make an order from a farmer. (Create)
     #select_size method also holds create order function 
@@ -133,21 +128,23 @@ class CLI
     end 
 
     #create <exit> method to return user if they choose no from <create_order>
-    def exit 
+    def exit
         puts 'Thank you for your time.'
     end 
 
-    
-#     # As a user, I want to be able to confirm an order from a farmer. (Read)
-#     def confirm_order (order_number)
-#         matching_order = Order.all.find {|order| order.number == order_number}
-#         order_details = matching_order.each {|order| puts order.customer, order.farmer, order.size}
-#         puts "Here are the details of your confirmed order. #{order_details}""
-#     end 
-        
-#     # end
+    # # As a user, I want to be able to confirm an order with a farmer. (Read)
+    def confirm_order #what is the purpose of confirming an order?
+        # order_number == ""
+        puts "Please enter your order number."
+        order_number = gets.chomp 
+        binding.pry
+    #     matching_order = Order.find_by{order.id == order_number}
+    #     order_details = matching_order.puts {|order| order.customer, order.farmer, order.size}
+    #     puts order_details
+    #     puts "You ordered a #{@order.id} basket from #{farm`er.name}."
+    end 
 
-#     # # As a user, I want to pick a farm and view previous orders. (Read)
+# # As a user, I want to pick a farm and view previous orders. (Read)
 #     # def view_previous_order
 #         def find_customer(name)
 #             Puts 'Please enter your name.'
@@ -175,8 +172,6 @@ class CLI
             end 
         end 
     end 
-
-
 
 #     # As a user, I want to be able to delete my basket. (Delete)
     def clear_basket
@@ -223,9 +218,5 @@ class CLI
             edit_delete_or_exit
         end 
     end 
-
-
-
-  
 
 end 
